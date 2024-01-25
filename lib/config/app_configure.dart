@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project_exam/screen/home/my_home_page.dart';
 import 'package:flutter_project_exam/screen/my_app.dart';
 
 ///
@@ -41,7 +40,7 @@ class AppConfigure {
 
   void run() {
     _init();
-    runApp(MyApp());
+    runApp(const MyApp());
   }
 
   void _init() {}
