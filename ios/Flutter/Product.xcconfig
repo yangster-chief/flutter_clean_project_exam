@@ -1,0 +1,11 @@
+//
+//  Product.xcconfig
+//  Runner
+//
+//  Created by 양수장 on 1/26/24.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+BUNDLE_IDENTIFIER=com.example.flutter_project_exam
+DISPLAY_NAME=flutter_project_exam
