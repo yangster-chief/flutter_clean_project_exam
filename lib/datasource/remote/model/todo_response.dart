@@ -1,3 +1,4 @@
+import 'package:flutter_project_exam/domain/entity/todo.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 ///
@@ -24,4 +25,16 @@ class ToDoResponse {
       _$ToDoResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ToDoResponseToJson(this);
+}
+
+extension ToDoResponseToEntity on ToDoResponse {
+  ToDo toEntity() => ToDo(
+        id: id,
+        text: text,
+        done: done,
+      );
+}
+
+extension ToDoResponseListToEntityList on List<ToDoResponse> {
+  List<ToDo> toEntityList() => map((e) => e.toEntity()).toList();
 }

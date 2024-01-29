@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter_project_exam/core/result.dart';
 import 'package:flutter_project_exam/datasource/local/app_dao.dart';
 import 'package:flutter_project_exam/datasource/local/model/todo_model.dart';
 import 'package:flutter_project_exam/datasource/remote/api_service.dart';
+import 'package:flutter_project_exam/datasource/remote/model/todo_response.dart';
+import 'package:flutter_project_exam/domain/dto/create_todo.dart';
 import 'package:flutter_project_exam/domain/entity/todo.dart';
-import 'package:flutter_project_exam/domain/todo_repository.dart';
+import 'package:flutter_project_exam/domain/repository/todo_repository.dart';
 import 'package:injectable/injectable.dart';
 
 ///
@@ -19,43 +22,48 @@ import 'package:injectable/injectable.dart';
 class ToDoRepositoryImpl implements ToDoRepository {
   final ApiService _apiService;
   final AppDao _appDao;
-  final _toDosController = StreamController<List<ToDo>>();
 
-  ToDoRepositoryImpl(this._apiService, this._appDao);
-
-  Stream<List<ToDo>> get toDosStream => _toDosController.stream;
-
-  void _emitCachedData() {
-    final cachedToDos = _appDao.getAll();
-    _toDosController.add(cachedToDos.toEntityList());
-  }
+  const ToDoRepositoryImpl(this._apiService, this._appDao);
 
   @override
-  Future<ToDo> create(ToDo toDo) async {
-    // TODO: implement create
-    throw UnimplementedError();
-  }
+  Future<Result<List<ToDo>>> fetchToDos(bool forceUpdate) => executeSafe(
+        () async {
+          if (forceUpdate || _appDao.isEmpty()) {
+            final res = await _apiService.getToDos();
+            final toDos = res.toEntityList();
+            _appDao.clearAll();
+            _appDao.saveAll(toDos.toModelList());
+            return toDos;
+          } else {
+            final cachedToDos = _appDao.getAll();
+            return cachedToDos.toEntityList();
+          }
+        },
+      );
 
   @override
-  Future<void> delete(String id) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
+  Future<Result<void>> create(String text) => executeSafe(
+        () async {
+          final res = await _apiService.createToDo(CreateToDo(text: text));
+          final newTodo = res.toEntity();
+          _appDao.save(newTodo.toModel());
+        },
+      );
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-  }
+  Future<Result<void>> update(String id) => executeSafe(
+        () async {
+          final res = await _apiService.updateToDo(id);
+          final updatedTodo = res.toEntity();
+          _appDao.update(updatedTodo.toModel());
+        },
+      );
 
   @override
-  Future<List<ToDo>> fetchToDos() {
-    // TODO: implement fetchToDos
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ToDo> update(ToDo toDo) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
+  Future<Result<void>> delete(String id) => executeSafe(
+        () async {
+          await _apiService.delete(id);
+          _appDao.delete(id);
+        },
+      );
 }

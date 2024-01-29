@@ -31,6 +31,18 @@ extension ToDoModelToEntity on ToDoModel {
       );
 }
 
+extension ToDoToModel on ToDo {
+  ToDoModel toModel() => ToDoModel(
+        id: id,
+        text: text,
+        done: done,
+      );
+}
+
 extension ToDoModelListToEntityList on List<ToDoModel> {
   List<ToDo> toEntityList() => map((e) => e.toEntity()).toList();
+}
+
+extension ToDoListToModelList on List<ToDo> {
+  List<ToDoModel> toModelList() => map((e) => e.toModel()).toList();
 }

@@ -25,4 +25,7 @@ abstract class ApiService {
 
   @PATCH("/todo/{id}")
   Future<ToDoResponse> updateToDo(@Path('id') String id);
+
+  @DELETE("/todo/{id}")
+  Future<void> delete(@Path('id') String id);
 }
