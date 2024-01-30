@@ -1,5 +1,4 @@
 import 'package:flutter_project_exam/datasource/remote/model/todo_response.dart';
-import 'package:flutter_project_exam/domain/dto/create_todo.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
@@ -21,11 +20,8 @@ abstract class ApiService {
   Future<List<ToDoResponse>> getToDos();
 
   @POST("/todo")
-  Future<ToDoResponse> createToDo(@Body() CreateToDo toDo);
+  Future<ToDoResponse> createToDo(@Body() Map<String, String> body);
 
   @PATCH("/todo/{id}")
   Future<ToDoResponse> updateToDo(@Path('id') String id);
-
-  @DELETE("/todo/{id}")
-  Future<void> delete(@Path('id') String id);
 }

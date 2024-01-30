@@ -12,5 +12,4 @@ abstract class ToDoRepository {
   Future<Result<List<ToDo>>> fetchToDos(bool forceUpdate);
   Future<Result<void>> create(String text);
   Future<Result<void>> update(String id);
-  Future<Result<void>> delete(String id);
 }

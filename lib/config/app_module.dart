@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_project_exam/config/app_configure.dart';
 import 'package:flutter_project_exam/config/module/hive_service.dart';
 import 'package:flutter_project_exam/datasource/remote/api_service.dart';
 import 'package:injectable/injectable.dart';
@@ -12,9 +13,9 @@ import 'package:injectable/injectable.dart';
 ///
 @module
 abstract class AppModule {
-  @lazySingleton
+  @preResolve
   Future<HiveService> get hiveService => HiveService.init();
 
   @lazySingleton
-  ApiService get apiService => ApiService(Dio());
+  ApiService get apiService => ApiService(Dio(), baseUrl: AppConfigure.apiUrl);
 }

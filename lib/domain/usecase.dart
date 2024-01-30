@@ -6,12 +6,10 @@
 /// Description:
 ///
 abstract class UseCase<Type, Params> {
-  Future<void> call(
+  Future<Type> call(
     Params params, {
-    required ResultSuccessCallback<Type> onSuccess,
     required ResultErrorCallback onError,
   });
 }
 
-typedef ResultSuccessCallback<T> = void Function(T data);
 typedef ResultErrorCallback = void Function(Exception error);

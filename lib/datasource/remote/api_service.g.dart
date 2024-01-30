@@ -50,11 +50,12 @@ class _ApiService implements ApiService {
   }
 
   @override
-  Future<ToDoResponse> createToDo(CreateToDo toDo) async {
+  Future<ToDoResponse> createToDo(Map<String, String> body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = toDo;
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<ToDoResponse>(Options(
       method: 'POST',
@@ -101,30 +102,6 @@ class _ApiService implements ApiService {
             ))));
     final value = ToDoResponse.fromJson(_result.data!);
     return value;
-  }
-
-  @override
-  Future<void> delete(String id) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final Map<String, dynamic>? _data = null;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
-      method: 'DELETE',
-      headers: _headers,
-      extra: _extra,
-    )
-        .compose(
-          _dio.options,
-          '/todo/${id}',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(
-            baseUrl: _combineBaseUrls(
-          _dio.options.baseUrl,
-          baseUrl,
-        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

@@ -6,26 +6,25 @@ import 'package:injectable/injectable.dart';
 
 ///
 /// flutter_project_exam
-/// File Name: get_todo_list_usecase
+/// File Name: create_todo_usecase
 /// Created by sujangmac
 ///
 /// Description:
 ///
 @injectable
-class GetToDoListUseCase implements UseCase<List<ToDo>, bool> {
+class CreateToDoUseCase implements UseCase<void, String> {
   final ToDoRepository _toDoRepository;
 
-  const GetToDoListUseCase(this._toDoRepository);
+  const CreateToDoUseCase(this._toDoRepository);
 
   @override
-  Future<List<ToDo>> call(
-    bool params, {
+  Future<void> call(
+    String params, {
     required ResultErrorCallback onError,
   }) async {
-    final res = await _toDoRepository.fetchToDos(params);
+    final res = await _toDoRepository.create(params);
     if (res is ResultError) {
       onError(res.error!);
     }
-    return res.data ?? [];
   }
 }

@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_project_exam/injector.dart';
 import 'package:flutter_project_exam/screen/my_app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 ///
 /// flutter_project_exam
@@ -30,18 +34,22 @@ class AppConfigure {
   static String get apiUrl {
     switch (buildType) {
       case BuildType.develop:
-        return 'https://dev-api.flutter.app';
+        return Platform.isAndroid
+            ? 'http://10.0.2.2:3000'
+            : 'http://localhost:3000';
       case BuildType.product:
-        return 'https://api.flutter.app';
+        return Platform.isAndroid
+            ? 'http://10.0.2.2:3000'
+            : 'http://localhost:3000';
     }
   }
 
   static bool get isDevPhase => buildType == BuildType.develop;
 
-  void run() {
-    _init();
-    runApp(const MyApp());
+  void run() async {
+    await configureDependencies();
+    runApp(const ProviderScope(
+      child: MyApp(),
+    ));
   }
-
-  void _init() {}
 }

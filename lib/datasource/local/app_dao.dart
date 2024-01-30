@@ -26,9 +26,6 @@ class AppDao {
   //clear all
   Future<void> clearAll() => _hive.toDoBox.clear();
 
-  //delete
-  Future<void> delete(String id) => _hive.toDoBox.delete(id);
-
   //save
   void save(ToDoModel toDoModel) => _hive.toDoBox.put(toDoModel.id, toDoModel);
 
